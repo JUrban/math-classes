@@ -7,16 +7,16 @@ Require Import
 
 Instance: Proper (equiv ==> equiv) inject_Z. Proof. intros x y H. info rewrite H. reflexivity. Qed.
 
-Instance: SemiGroup_Morphism inject_Z (Aop:=Zmult) (Bop:=Qmult) := { preserves_sg_op := fun _ _  => refl_equal }.
+Instance: SemiGroup_Morphism inject_Z (Aop:=Zmult) (Bop:=Qmult) := { preserves_sg_op := fun _ _  => refl_equal _ }.
 
 Instance: SemiGroup_Morphism inject_Z (Aop:=Zplus) (Bop:=Qplus) := { preserves_sg_op := _ }.
 Proof. intros. unfold inject_Z, sg_op, Qplus. repeat rewrite Zmult_1_r. reflexivity. Qed.
 
-Instance: Monoid_Morphism inject_Z (Aunit:=0%Z) (Bunit:=0%Q) (Amult:=Zplus) (Bmult:=Qplus) := { preserves_mon_unit := refl_equal }.
+Instance: Monoid_Morphism inject_Z (Aunit:=0%Z) (Bunit:=0%Q) (Amult:=Zplus) (Bmult:=Qplus) := { preserves_mon_unit := refl_equal _ }.
 
-Instance: Monoid_Morphism inject_Z (Aunit:=1%Z) (Bunit:=1%Q) (Amult:=Zmult) (Bmult:=Qmult) := { preserves_mon_unit := refl_equal }.
+Instance: Monoid_Morphism inject_Z (Aunit:=1%Z) (Bunit:=1%Q) (Amult:=Zmult) (Bmult:=Qmult) := { preserves_mon_unit := refl_equal _ }.
 
-Instance: Group_Morphism inject_Z (Aunit:=0%Z) (Bunit:=0%Q) := { preserves_inv := fun _ => refl_equal }.
+Instance: Group_Morphism inject_Z (Aunit:=0%Z) (Bunit:=0%Q) := { preserves_inv := fun _ => refl_equal _ }.
 
 Instance: Ring_Morphism inject_Z. 
 

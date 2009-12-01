@@ -1,5 +1,7 @@
 import os, glob, string
 
+ssrdir = os.environ["SSRDIR"]
+
 nodes = ['.']
 dirs = []
 vs = []
@@ -13,7 +15,9 @@ while nodes:
     dirs += [node]
     nodes += glob.glob(node + '/*')
 
-coqc = 'coqc -I . $SOURCE'
+ssr_include = '-I ' + ssrdir + '/theories -as Ssreflect'
+
+coqc = ssrdir + '/bin/ssrcoq -compile ${str(SOURCE)[:-2]} ' + ssr_include
 
 env = DefaultEnvironment(ENV = os.environ)
 env.Append(BUILDERS = {'Coq' : Builder(action = coqc, suffix = '.vo', src_suffix = '.v')})

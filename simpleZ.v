@@ -138,8 +138,9 @@ Qed.
 Lemma split_into_nats n m: C n m == NtoZ n + - NtoZ m.
 Proof. ring_on_nat. Qed.
 
-Global Instance: forall x y: Z, Decision (x == y)
-  := fun x y => decide (pos x + neg y == pos y + neg x).
+Global Instance: forall x y: Z, Decision (x == y).
+  exact (fun x y => decide (pos x + neg y == pos y + neg x)).
+Defined.
     (* An example of specialization: while there will be a generic decider that works for
      all Integers, this specialized one is potentially vastly more efficient. *)
 

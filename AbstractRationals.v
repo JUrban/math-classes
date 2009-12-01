@@ -38,8 +38,12 @@ Section sec. Context `{Rationals Q}.
    intros. 
    apply (naturals_to_integers_injective).
    apply (injective (integers_to_ring (Z nat) Q)).
-   do 2 rewrite (naturals_to_semiring_unique Q (fun v => integers_to_ring (Z nat) Q (naturals_to_semiring nat (Z nat) v)) _).
-   assumption.
+   pose proof (naturals_to_semiring_unique Q (fun v => integers_to_ring (Z nat) Q (naturals_to_semiring nat (Z nat) v))).
+   rewrite H1.
+    rewrite H1.
+     assumption.
+    apply _.
+   apply _.
   Qed.
 
   Instance: OrdField Q. 

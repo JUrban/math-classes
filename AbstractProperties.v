@@ -132,7 +132,7 @@ Section field_props. Context `{Field F} `{forall x y: F, Decision (x == y)}.
   Qed.
 
   Lemma inv_0: / 0 == 0.
-  Proof. unfold dec_mult_inv. destruct decide; intuition. Qed.
+  Proof. unfold dec_mult_inv. destruct decide. intuition. elimtype False. intuition. Qed.
 
   Lemma dec_mult_inv_distr (x y: F): / (x * y) == / x * / y.
   Proof with auto.

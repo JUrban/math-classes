@@ -194,10 +194,10 @@ Section contents.
     Global Instance: RingZero R0 := @UA.op sig (fun _ => R0) _ zero.
     Global Instance: RingOne R0 := @UA.op sig (fun _ => R0) _ one.
 
-    Global Instance: RingPlus (R1 u) := fun u => match u with tt => @UA.op sig R1 _ plus end.
-    Global Instance: RingMult (R1 u) := fun u => match u with tt => @UA.op sig R1 _ mult end.
-    Global Instance: RingZero (R1 u) := fun u => match u with tt => @UA.op sig R1 _ zero end.
-    Global Instance: RingOne (R1 u) := fun u => match u with tt => @UA.op sig R1 _ one end.
+    Global Instance: RingPlus (R1 u) := match u with tt => @UA.op sig R1 _ plus end.
+    Global Instance: RingMult (R1 u) := match u with tt => @UA.op sig R1 _ mult end.
+    Global Instance: RingZero (R1 u) := match u with tt => @UA.op sig R1 _ zero end.
+    Global Instance: RingOne (R1 u) := match u with tt => @UA.op sig R1 _ one end.
 
     Definition morphism_from_ua (sr0: @SemiRing R0 _ _ _ _ _) (sr1: @SemiRing (R1 tt) _ _ _ _ _):
      forall u, SemiRing_Morphism (f u).

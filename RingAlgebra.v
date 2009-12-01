@@ -164,11 +164,11 @@ Section contents.
     Global Instance: RingOne R0 := @UA.op sig (fun _ => R0) _ one.
     Global Instance: GroupInv R0 := @UA.op sig (fun _ => R0) _ opp.
 
-    Global Instance: RingPlus (R1 u) := fun u => match u with tt => @UA.op sig R1 _ plus end.
-    Global Instance: RingMult (R1 u) := fun u => match u with tt => @UA.op sig R1 _ mult end.
-    Global Instance: RingZero (R1 u) := fun u => match u with tt => @UA.op sig R1 _ zero end.
-    Global Instance: RingOne (R1 u) := fun u => match u with tt => @UA.op sig R1 _ one end.
-    Global Instance: GroupInv (R1 u) := fun u => match u with tt => @UA.op sig R1 _ opp end.
+    Global Instance: RingPlus (R1 u) := match u with tt => @UA.op sig R1 _ plus end.
+    Global Instance: RingMult (R1 u) := match u with tt => @UA.op sig R1 _ mult end.
+    Global Instance: RingZero (R1 u) := match u with tt => @UA.op sig R1 _ zero end.
+    Global Instance: RingOne (R1 u) := match u with tt => @UA.op sig R1 _ one end.
+    Global Instance: GroupInv (R1 u) := match u with tt => @UA.op sig R1 _ opp end.
 
     Definition morphism_from_ua (sr0: @Ring R0 _ _ _ _ _ _) (sr1: @Ring (R1 tt) _ _ _ _ _ _):
      forall u, Ring_Morphism (f u).

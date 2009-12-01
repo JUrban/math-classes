@@ -78,23 +78,26 @@ Section contents.
      apply (@antisymmetry _ _ integer_precedes _).
       rewrite <- H4...
      apply <- precedes_flip.
-     rewrite H4...
+     apply (sr_precedes_proper _ _ (reflexivity _) _ _ H4)...
     apply (@antisymmetry _ _ integer_precedes _).
      apply <- precedes_flip.
-     rewrite <- H4...
-    rewrite H4...
+     apply (sr_precedes_proper _ _ (reflexivity _) _ _ H4)...
+    apply (sr_precedes_proper _ _ H4 _ _ (reflexivity _))...
    apply (injective group_inv).
    symmetry. assumption.
   Qed.
 
-Lemma abs_nat `{Naturals N} `{!IntAbs Int N} (n: N): int_abs' Int N (naturals_to_semiring N Int n) == n.
+  Lemma abs_nat `{Naturals N} `{!IntAbs Int N} (n: N): int_abs' Int N (naturals_to_semiring N Int n) == n.
   Proof.
    unfold int_abs'. destruct int_abs. simpl.
    apply (injective (naturals_to_semiring N Int)).
    destruct o. assumption.
    apply (@antisymmetry _ _ integer_precedes _).
-    apply <- precedes_flip. rewrite H3. apply neg_precedes_pos.
-   rewrite <- H3. apply neg_precedes_pos.
+    apply <- precedes_flip.
+    apply (sr_precedes_proper _ _ (reflexivity _) _ _ H3).
+    apply neg_precedes_pos.
+   apply (sr_precedes_proper _ _ H3 _ _ (reflexivity _)).
+   apply neg_precedes_pos.
   Qed. 
   
   Lemma abs_opp_nat `{Naturals N} `{!IntAbs Int N} (n: N): int_abs' Int N (- naturals_to_semiring N Int n) == n.
@@ -102,19 +105,30 @@ Lemma abs_nat `{Naturals N} `{!IntAbs Int N} (n: N): int_abs' Int N (naturals_to
    unfold int_abs'. destruct int_abs. simpl. apply (injective (naturals_to_semiring N Int)). 
    destruct o. 
     apply (@antisymmetry _ _ integer_precedes _).
-     rewrite H3. apply neg_precedes_pos.
-    apply <- precedes_flip. rewrite <- H3. apply neg_precedes_pos.
+     apply (sr_precedes_proper _ _ H3 _ _ (reflexivity _)).
+     apply neg_precedes_pos.
+    apply <- precedes_flip.
+    apply (sr_precedes_proper _ _ (reflexivity _) _ _ H3).
+    apply neg_precedes_pos.
    apply (injective group_inv). assumption.
   Qed. 
   
   Lemma neg_is_pos `{Naturals N} (x y: N): - naturals_to_semiring N Int x == naturals_to_semiring N Int y -> x == 0 /\ y == 0.
   Proof.
    intro E.
+   assert (naturals_to_semiring N Int 0 == 0) as F.
+    apply preserves_0.
    split; apply (injective (naturals_to_semiring N Int)); apply (@antisymmetry _ _ integer_precedes _).
-      apply <- precedes_flip. rewrite E. apply neg_precedes_pos.
-     rewrite preserves_0. apply zero_sr_precedes_nat.
-    rewrite <- E. apply neg_precedes_pos.
-   rewrite preserves_0.
+      apply <- precedes_flip.
+      apply (sr_precedes_proper _ _ (reflexivity _) _ _ E).
+      apply neg_precedes_pos.
+     unfold integer_precedes.
+     apply (sr_precedes_proper _ _ F _ _ (reflexivity _)).
+     apply zero_sr_precedes_nat.
+    unfold sr_precedes.
+    apply (sr_precedes_proper _ _ E _ _ (reflexivity _)).
+    apply neg_precedes_pos.
+   apply (sr_precedes_proper _ _ F _ _ (reflexivity _)).
    apply zero_sr_precedes_nat.
   Qed. 
   
@@ -141,15 +155,21 @@ Lemma abs_nat `{Naturals N} `{!IntAbs Int N} (n: N): int_abs' Int N (naturals_to
   
   Lemma abs_nat' `{Naturals N} `{Naturals N'} `{!IntAbs Int N} (n: N'): int_abs' Int N (naturals_to_semiring N' Int n) == naturals_to_semiring N' N n.
   Proof.
-   rewrite <- (naturals_to_semiring_unique Int (fun x => naturals_to_semiring N Int (naturals_to_semiring N' N x))).
-    rewrite abs_nat.
-    reflexivity.
-   apply (compose_semiring_morphisms _ _ _ _ _).
+   assert (SemiRing_Morphism (fun x => naturals_to_semiring N Int (naturals_to_semiring N' N x))).
+    apply _.
+   pose proof (naturals_to_semiring_unique Int _ H5 n).
+   simpl in H6.
+   transitivity (int_abs' Int N (naturals_to_semiring N Int (naturals_to_semiring N' N n))).
+    apply int_abs'_proper.
+    symmetry.
+    assumption.
+   apply abs_nat.
   Qed.
   
   Lemma abs_opp `{Naturals N} `{!IntAbs Int N} z: int_abs' Int N (- z) == int_abs' Int N z.
   Proof.
    unfold int_abs' at 2.
+   pose proof int_abs'_proper.
    destruct int_abs as [x [E | E]]; simpl; rewrite <- E.
     apply abs_opp_nat.
    rewrite inv_involutive.
@@ -243,34 +263,44 @@ Proof.
     reflexivity.
    apply (@antisymmetry B _ integer_precedes _).
     apply <- (@precedes_flip B _ _ _ _ _ _ _).
-    rewrite H5.
-    rewrite <- H6.
-    rewrite inv_involutive.
-    apply neg_precedes_pos.
+    assert (- f (naturals_to_semiring N A x) == naturals_to_semiring N B x0).
+     rewrite H5.
+     rewrite <- H6.
+     rewrite inv_involutive.
+     reflexivity.
+    apply (sr_precedes_proper _ _ (reflexivity _) _ _ H7).
+    apply neg_precedes_pos.    
    pose proof (@transitivity B sr_precedes _) as TR.
    apply TR with 0.
     apply <- (precedes_flip (naturals_to_semiring N B x0) 0).
-    rewrite H6.
-    rewrite <- H5.
-    rewrite opp_0.
+    assert (- naturals_to_semiring N B x0 == f (naturals_to_semiring N A x)).
+     rewrite H6, <- H5.
+     reflexivity.
+    apply (sr_precedes_proper _ _ opp_0 _ _ H7).
     apply preserves_nonneg.
     apply _.
    apply preserves_nonneg.
    apply _.
   apply (@antisymmetry B _ integer_precedes _).
    apply <- (@precedes_flip B _ _ _ _ _ _ _).
-   rewrite <- preserves_opp.
-   rewrite H5.
-   rewrite <- H6.
+   assert (- f (naturals_to_semiring N A x) == naturals_to_semiring N B x0).
+    rewrite <- preserves_opp.
+    rewrite H6, <- H5.
+    reflexivity.
+   apply (sr_precedes_proper _ _ (reflexivity _) _ _ H7).
    apply neg_precedes_pos.
-  rewrite H6.
-  rewrite <- H5.
-  rewrite preserves_opp.
+  assert (naturals_to_semiring N B x0 == - f (naturals_to_semiring N A x)).
+   rewrite H6, <- H5, preserves_opp.
+   reflexivity.
+  apply (sr_precedes_proper _ _ H7 _ _ (reflexivity _)).
   pose proof (@transitivity B sr_precedes _) as TR.
   apply TR with 0.
    apply <- (@precedes_flip B _ _ _ _ _ _ _).
-   rewrite opp_0.
-   rewrite inv_involutive.
+   assert (- - f (naturals_to_semiring N A x) == f (naturals_to_semiring N A x)).
+    apply inv_involutive.
+   apply (sr_precedes_proper _ _ (reflexivity _) _ _ H8).
+   assert ((-0:B) == (0:B)). apply opp_0.
+   apply (sr_precedes_proper _ _ H9 _ _ (reflexivity _)).
    apply preserves_nonneg.
    apply _.
   apply preserves_nonneg.

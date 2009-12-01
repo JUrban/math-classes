@@ -57,13 +57,21 @@ Proof.
    intros x y E.
    rewrite E.
    intuition.
-  do 2 rewrite preserves_0.
-  reflexivity.
+  assert (Proper (equiv ==> equiv) f).
+   apply _.
+  apply -> (sr_precedes_proper 0 0 (reflexivity _) 0 (f (naturals_to_semiring N A 0))).
+   reflexivity.
+  symmetry.
+  rewrite preserves_0.
+  apply preserves_0.
  intros m [x E].
- do 2 rewrite preserves_plus.
- rewrite <- E.
- rewrite plus_0_l.
- do 2 rewrite preserves_1.
+ assert (f (naturals_to_semiring N A (1 + m)) == 1 + naturals_to_semiring nat B x).
+  do 2 rewrite preserves_plus.
+  do 2 rewrite preserves_1.
+  rewrite <- E.
+  rewrite plus_0_l.
+  reflexivity.
+ apply (sr_precedes_proper 0 0 (reflexivity _) _ _ H3).
  exists (1 + x).
  rewrite preserves_plus.
  rewrite preserves_1.
@@ -92,7 +100,7 @@ Section ring. Context `{Ring R}. (* extra sr_precedes properties that hold in ri
     assumption.
     (* for some reason [rewrite] didn't work above. todo: look into it *)
    apply H4.
-   rewrite opp_0.
+   apply (sr_precedes_proper (-z) (-z) (reflexivity _) _ _ opp_0).
    assumption.
   Qed.
 

@@ -118,6 +118,7 @@ Section decfield_order. Context `{Field F} `{forall x y: F, Decision (x == y)}.
     unfold dec_mult_inv.
     destruct decide.
      reflexivity.
+    exfalso.
     intuition.
    set (naturals_to_semiring nat F 0) in *.
    rewrite H2.

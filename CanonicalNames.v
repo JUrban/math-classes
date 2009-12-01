@@ -1,4 +1,3 @@
-Global Generalizable All Variables.
 Require Import RelationClasses Relation_Definitions Morphisms Setoid.
 
 Class Decision (T: Prop) := decide: sumbool T (T -> False).

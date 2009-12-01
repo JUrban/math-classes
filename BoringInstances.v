@@ -58,7 +58,9 @@ Section positive_instances.
     { monoid_lunit := fun _ => @refl_equal _ _; monoid_runit := BinPos.Pmult_1_r }.
 
   (* misc: *)
-  Global Instance positive_eq_dec: forall (x y: BinPos.positive), Decision (x == y) := BinPos.positive_eq_dec.
+  Global Instance positive_eq_dec: forall (x y: BinPos.positive), Decision (x == y).
+    exact BinPos.positive_eq_dec.
+  Defined.
 
 End positive_instances.
 
@@ -95,7 +97,9 @@ Section nat_instances.
   Global Instance nat_semiring: !SemiRing nat := { mult_0_l := Mult.mult_0_l }.
 
   (* misc *)
-  Global Instance: forall x y: nat, Decision (x == y) := Peano_dec.eq_nat_dec.
+  Global Instance: forall x y: nat, Decision (x == y).
+    exact Peano_dec.eq_nat_dec.
+  Defined.
 
 End nat_instances.
 
@@ -140,7 +144,9 @@ Section Z_instances.
   Global Instance: Ring BinInt.Z.
 
   (* misc: *)
-  Global Instance: forall x y: BinInt.Z, Decision (x == y) := ZArith_dec.Z_eq_dec.
+  Global Instance: forall x y: BinInt.Z, Decision (x == y).
+    exact ZArith_dec.Z_eq_dec.
+  Defined.
 
 End Z_instances.
 
@@ -210,7 +216,9 @@ Section Q_instances.
   Global Instance: OrdField Q.
 
   (* misc: *)
-  Global Instance: forall x y: Q, Decision (x == y) := Qeq_dec.
+  Global Instance: forall x y: Q, Decision (x == y).
+    exact Qeq_dec.
+  Defined.
 
 End Q_instances.
 
